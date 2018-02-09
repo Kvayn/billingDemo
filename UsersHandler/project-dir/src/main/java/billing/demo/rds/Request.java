@@ -3,7 +3,7 @@ package billing.demo.rds;
 public class Request {
     String userId;
     String metric;
-    int count;	
+    int count;  
 
     public Request() {
     }
@@ -11,7 +11,7 @@ public class Request {
     public Request(String userId, String metric, int count) {
         this.userId = userId;
         this.metric = metric;
-	this.count = count;
+    this.count = count;
     }
 
     public String getUserId() {

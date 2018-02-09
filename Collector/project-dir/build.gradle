@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    compile (
+        'com.amazonaws:aws-lambda-java-core:1.1.0',
+        'com.amazonaws:aws-lambda-java-events:1.1.0',
+	'com.amazonaws:aws-java-sdk-lambda:1.11.274'
+    )
+
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources              
+    into('lib') {
+        from configurations.runtime
+    }           
+}
+
+build.dependsOn buildZip

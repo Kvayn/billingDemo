@@ -1,0 +1,24 @@
+curl -v -X POST \
+  'https://85v3h1qucj.execute-api.us-west-2.amazonaws.com/test/Seattle?time=evening' \
+  -H 'content-type: application/json' \
+  -H 'day: Thursday' \
+  -H 'x-amz-docs-region: us-west-2' \
+  -d '{
+	"callerName": "John"
+}'
+
+curl -v -X POST \
+  'https://85v3h1qucj.execute-api.us-west-2.amazonaws.com/test/Seattle?time=evening' \
+  -H 'content-type: application/json' \
+  -H 'x-amz-docs-region: us-west-2' \
+  -d '{
+	"callerName": "John"
+}'
+
+curl -v -X POST \
+  'https://85v3h1qucj.execute-api.us-west-2.amazonaws.com/test/serh?metric=call&count=3' \
+  -H 'content-type: application/json' \
+  -H 'x-amz-docs-region: us-west-2' 
+
+aws ec2 authorize-security-group-ingress --group-id sg-05bc137f --protocol all --port 3006 --cidr 0.0.0.0/0
+

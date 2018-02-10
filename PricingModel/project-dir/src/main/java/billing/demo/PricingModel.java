@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -46,7 +47,26 @@ public class PricingModel implements RequestHandler<Request, String>  {
     	int count = 0;
 
     	String userData = invokeReader(formatPayLoad(request.userId));
-    	return userData;
+    	userData = userData.replace("\\", "");
+    	userData = userData.substring(1, userData.length() - 1);
+    	System.out.println(userData);
+    	Users agregatedUser = new Users();
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	//String tmp1 = tmp.replace("\"", "");
+    	try{
+    		agregatedUser = mapper.readValue(userData, Users.class);
+    	} catch(Exception e){
+    		return "Parsing error";
+    	}
+
+    	metric = agregatedUser.getMetric();
+    	double price = Double.parseDouble(System.getenv(metric));
+    	double bill = price*agregatedUser.getCount();
+
+    	String result = "Users " + agregatedUser.getUserId() + " is billed for " + bill + " CHF";
+
+    	return result;
         
 
 

@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import java.util.List; 
 import java.util.Iterator; 
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Reader implements RequestHandler<Request, String> {
 
@@ -32,6 +33,23 @@ public class Reader implements RequestHandler<Request, String> {
             tx.commit();
         }
 
-        return String.format("{\"userId\" : \"%s\", \"metric\" : \"%s\", \"count\" : %d}", request.userId, metric, agrCount);
+
+        Users agregatedUser = new Users(request.userId, metric, agrCount);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        String result = "";
+        try{
+            result = mapper.writeValueAsString(agregatedUser);
+        } catch (Exception e){
+            System.out.println("Mapping exception");
+        }
+        System.out.println("result is : " + result);
+        //String testResult = "{ \"userId\" : \"" + request.userId + "\", \"metric\" : \"" + metric + "\", \"count\" : \"" + agrCount + "\"}"; 
+        
+        
+        //String.format("{ userId : %s, metric : %s, count : %d}", request.userId, metric, agrCount);
+        //String tmp = testResult + "\n" + result + result.replace("\\", "");
+
+        return result;
     }
 }

@@ -1,3 +1,4 @@
+billing/demo/cli/Config.class
 billing/demo/cli/FileConverter.class
 billing/demo/cli/CommandGetPeriodBill.class
 billing/demo/cli/CommandGetbill.class

@@ -30,6 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 
 
@@ -84,8 +86,11 @@ public class PricingModel implements RequestHandler<Request, String>  {
     	metric = agregatedUser.getMetric();
     	double price = Double.parseDouble(System.getenv(metric));
     	double bill = price*agregatedUser.getCount();
+        bill = bill - (bill*getDiscount(agregatedUser.getUserId()));
 
-    	String result = "User " + agregatedUser.getUserId() + " is billed for " + bill + " CHF";
+        NumberFormat formatter = new DecimalFormat("#0.0000");     
+
+    	String result = "User " + agregatedUser.getUserId() + " is billed for " + formatter.format(bill) + " CHF";
     	if (dateRequest) {
     		result += " in perid from " + df.format(request.from) + " to " + df.format(request.to);
     		
@@ -138,7 +143,12 @@ public class PricingModel implements RequestHandler<Request, String>  {
         		"\",\"to\" : \"" + to + 
         		 "\"}";
     	}
-  
+    private double getDiscount(String userId){
+        if (System.getenv(userId) == null) {
+            return 1;
+        }
+        return Double.parseDouble(System.getenv(userId));
+    }
 
     public String byteBufferToString(ByteBuffer buffer, Charset charset) {
         byte[] bytes;

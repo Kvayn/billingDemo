@@ -1,6 +1,7 @@
-billing/demo/cli/Main.class
 billing/demo/cli/FileConverter.class
+billing/demo/cli/CommandGetPeriodBill.class
+billing/demo/cli/CommandGetbill.class
+billing/demo/cli/Main.class
 billing/demo/cli/Request.class
 billing/demo/cli/CommandConfig.class
-billing/demo/cli/CommandGetbill.class
 billing/demo/cli/AwsCredentialsReader.class

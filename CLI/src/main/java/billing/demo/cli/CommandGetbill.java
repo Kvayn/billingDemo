@@ -6,6 +6,6 @@ import com.beust.jcommander.Parameters;
 
 @Parameters(separators = " ")
 public class CommandGetbill {
-	@Parameter(names={"--user", "-u"})
+	@Parameter(names={"--user", "-u"}, required = true)
 	String userId;
 }

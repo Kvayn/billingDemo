@@ -23,13 +23,27 @@ public class Main{
 		Main main = new Main();
 		JCommander jc = JCommander.newBuilder()
 		.addObject(main)
-		.addCommand("getperiodbill", getperiodbill)
+		.addCommand("getperiodbill", getPeriodBill)
 		.addCommand("getbill", getBill)
 		.addCommand("config", config)
-		.build()
-		.parse(args);
+		.build();
 
-		
+		jc.parse(args);
+
+		String parsedCommand = jc.getParsedCommand();
+		String result = "";
+
+		if(parsedCommand.equals("getbill")){
+			 result = invokeReader(formatNullPayLoad(getBill.userId));
+		} else {
+			if (parsedCommand.equals("getperiodbill")) {
+				String from = getPeriodBill.from;
+				String to = getPeriodBill.to;
+				result = invokeReader(formatPayLoad(getPeriodBill.userId, from, to));
+			}
+		}
+
+
 
 
 
@@ -72,8 +86,16 @@ public class Main{
         return result;
     }
 
-    private static String formatPayLoad(String user){
-        return "{ \"userId\" : \"" + user + "\" }";
+    private static String formatPayLoad(String user, String from, String to){
+        return "{ \"userId\" : \"" + user + 
+        		"\", \"from\" : \"" + from + 
+        		"\",\"to\" : \"" + to +
+        		"\"}";
+    }
+    private static String formatNullPayLoad(String user){
+        return "{ \"userId\" : \"" + user + 
+        		"\", \"from\" : null " + 
+        		",\"to\" : null }";
     }
 
     public static String byteBufferToString(ByteBuffer buffer, Charset charset) {

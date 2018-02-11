@@ -7,6 +7,6 @@ import java.io.File;
 
 @Parameters(separators = " ")
 public class CommandConfig {
-	@Parameter(names={"--file", "-f"}, converter=FileConverter.class)
+	@Parameter(names={"--file", "-f"}, converter=FileConverter.class, required = true)
 	File file;
 }

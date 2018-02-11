@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import java.util.List; 
 import java.util.Iterator; 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 
 public class Reader implements RequestHandler<Request, String> {
 
@@ -16,6 +17,9 @@ public class Reader implements RequestHandler<Request, String> {
         Transaction tx = null;
         int agrCount = 0;
         String metric = null;
+        Date from = request.getFrom();
+        Date to = request.getTo();
+        boolean dateRequest = (from != null)&(to != null);
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
@@ -27,14 +31,21 @@ public class Reader implements RequestHandler<Request, String> {
                     metric = users.getMetric();
                 }
                 if((users.getUserId()).equals(request.userId)){
-                    agrCount += users.getCount();
-                }
+                    if (!dateRequest) {
+                        agrCount += users.getCount();
+                    } else {
+                        if(isWithinRange(users.getDateTime(), from, to)){
+                            agrCount += users.getCount();
+                        }
+                    }
+                    
+                } 
             }
             tx.commit();
         }
 
 
-        Users agregatedUser = new Users(request.userId, metric, agrCount);
+        User agregatedUser = new User(request.userId, metric, agrCount);
         
         ObjectMapper mapper = new ObjectMapper();
         String result = "";
@@ -51,5 +62,8 @@ public class Reader implements RequestHandler<Request, String> {
         //String tmp = testResult + "\n" + result + result.replace("\\", "");
 
         return result;
+    }
+   private boolean isWithinRange(Date date, Date from, Date to) {
+    return !(date.before(from) || date.after(to));
     }
 }

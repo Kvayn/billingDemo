@@ -27,6 +27,10 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 
 
 public class PricingModel implements RequestHandler<Request, String>  {
@@ -46,7 +50,24 @@ public class PricingModel implements RequestHandler<Request, String>  {
 		String countStr = null;
     	int count = 0;
 
-    	String userData = invokeReader(formatPayLoad(request.userId));
+
+    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+    	boolean dateRequest = !((request.from == null)&(request.to == null));
+    	
+    	String payLoad = "";
+
+    	if (!dateRequest) {
+    		payLoad = formatPayLoad(request.userId, null, null);
+    	} else {
+    		payLoad = formatPayLoad(request.userId, df.format(request.from), df.format(request.to));
+    	}
+
+    	
+
+    	System.out.println("Payload is :" + payLoad);
+
+    	String userData = invokeReader(payLoad);
     	userData = userData.replace("\\", "");
     	userData = userData.substring(1, userData.length() - 1);
     	System.out.println(userData);
@@ -64,7 +85,11 @@ public class PricingModel implements RequestHandler<Request, String>  {
     	double price = Double.parseDouble(System.getenv(metric));
     	double bill = price*agregatedUser.getCount();
 
-    	String result = "Users " + agregatedUser.getUserId() + " is billed for " + bill + " CHF";
+    	String result = "User " + agregatedUser.getUserId() + " is billed for " + bill + " CHF";
+    	if (dateRequest) {
+    		result += " in perid from " + df.format(request.from) + " to " + df.format(request.to);
+    		
+    	}
 
     	return result;
         
@@ -101,9 +126,19 @@ public class PricingModel implements RequestHandler<Request, String>  {
         return result;
     }
 
-    private String formatPayLoad(String user){
-        return "{ \"userId\" : \"" + user + "\" }";
-    }
+    private String formatPayLoad(String user, String from, String to){
+    	if ((from == null)&(to == null)) {
+    		return "{ \"userId\" : \"" + user + 
+        			"\",\"from\" : null" +
+        			",\"to\" : null" + 
+        			 '}';
+    	}
+    	return "{ \"userId\" : \"" + user + 
+        		"\",\"from\" : \"" + from +
+        		"\",\"to\" : \"" + to + 
+        		 "\"}";
+    	}
+  
 
     public String byteBufferToString(ByteBuffer buffer, Charset charset) {
         byte[] bytes;

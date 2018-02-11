@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import java.util.Date;
 
 public class UsersHandler implements RequestHandler<Request, String> {
 
@@ -15,7 +16,8 @@ public class UsersHandler implements RequestHandler<Request, String> {
             Users users = new Users();
             users.setUserId(request.userId);
             users.setMetric(request.metric);
-	    users.setCount(request.count);
+	        users.setCount(request.count);
+            users.setDateTime(new Date());
             session.save(users);
             session.getTransaction().commit();
         }

@@ -19,15 +19,21 @@ public class Main{
 	public static void main(String[] args) {
 		CommandGetbill getBill = new CommandGetbill();
 		CommandConfig config = new CommandConfig();
+		CommandGetPeriodBill getPeriodBill = new CommandGetPeriodBill();
 		Main main = new Main();
-		JCommander.newBuilder()
+		JCommander jc = JCommander.newBuilder()
 		.addObject(main)
+		.addCommand("getperiodbill", getperiodbill)
 		.addCommand("getbill", getBill)
 		.addCommand("config", config)
 		.build()
 		.parse(args);
 
-		String result = invokeReader(formatPayLoad(getBill.userId));
+		
+
+
+
+		//String result = invokeReader(formatPayLoad(getBill.userId));
 
 		System.out.println(result);
 

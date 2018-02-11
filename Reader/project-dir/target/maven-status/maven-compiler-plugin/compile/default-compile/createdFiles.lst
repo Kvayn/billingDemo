@@ -1,4 +1,5 @@
 billing/demo/rds/Users.class
 billing/demo/rds/HibernateUtil.class
 billing/demo/rds/Reader.class
+billing/demo/rds/User.class
 billing/demo/rds/Request.class

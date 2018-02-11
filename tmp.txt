@@ -16,9 +16,13 @@ curl -v -X POST \
 }'
 
 curl -v -X POST \
-  'https://85v3h1qucj.execute-api.us-west-2.amazonaws.com/test/serh?metric=call&count=3' \
+  'https://85v3h1qucj.execute-api.us-west-2.amazonaws.com/test/Stalin?metric=call&count=3' \
   -H 'content-type: application/json' \
   -H 'x-amz-docs-region: us-west-2' 
 
 aws ec2 authorize-security-group-ingress --group-id sg-05bc137f --protocol all --port 3006 --cidr 0.0.0.0/0
+
+Standart Date formats for defauld AWS Lambda serealizator:
+
+(\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\", \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\", \"EEE, dd MMM yyyy HH:mm:ss zzz\", \"yyyy-MM-dd\")
 

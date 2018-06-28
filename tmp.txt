@@ -26,3 +26,17 @@ Standart Date formats for defauld AWS Lambda serealizator:
 
 (\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\", \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\", \"EEE, dd MMM yyyy HH:mm:ss zzz\", \"yyyy-MM-dd\")
 
+
+DateBase schema:
+
+
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| userId   | varchar(20) | NO   |     | NULL    |                |
+| metric   | varchar(20) | NO   |     | NULL    |                |
+| count    | int(11)     | NO   |     | NULL    |                |
+| DateTime | timestamp   | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+
